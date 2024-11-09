@@ -8,7 +8,6 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     rules: {
-      "no-console": "warn",
       "@typescript-eslint/no-unused-vars": [
       "error",
       {

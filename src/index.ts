@@ -3,6 +3,7 @@ import { authRouter } from "./presentation/routes/auth";
 import { swagger } from "@elysiajs/swagger";
 import { errorHandler } from "./presentation/middlewares/error-middleware";
 import { categoryRouter } from "./presentation/routes/category";
+import { linkRouter } from "./presentation/routes/link";
 
 const app = new Elysia()
   .use(
@@ -19,7 +20,9 @@ const app = new Elysia()
     })
   )
   .use(errorHandler)
-  .group("/api/v1", (app) => app.use(authRouter).use(categoryRouter))
+  .group("/api/v1", (app) =>
+    app.use(authRouter).use(categoryRouter).use(linkRouter)
+  )
   .listen(3000);
 
 console.log(

@@ -2,6 +2,9 @@ import { Elysia, t } from "elysia";
 import { authService } from "../../infrastructure/ioc/container";
 
 export const authRouter = new Elysia()
+  .guard({
+    tags: ["auth"],
+  })
   .post(
     "/register",
     async ({ body, set }) => {
@@ -21,7 +24,6 @@ export const authRouter = new Elysia()
         email: t.String({ minLength: 1, maxLength: 50, format: "email" }),
         password: t.String(),
       }),
-      tags: ["auth"],
     }
   )
   .post(
@@ -51,24 +53,17 @@ export const authRouter = new Elysia()
         email: t.String({ minLength: 1, maxLength: 50, format: "email" }),
         password: t.String(),
       }),
-      tags: ["auth"],
     }
   )
-  .post(
-    "/logout",
-    async ({ set, cookie: { session } }) => {
-      const sessionId = session.value;
+  .post("/logout", async ({ set, cookie: { session } }) => {
+    const sessionId = session.value;
 
-      if (!sessionId) {
-        set.status = 400;
-        throw Error("You are not logged in");
-      }
-
-      await authService.logout(sessionId);
-      session.remove();
-      return { message: "Logout successfull" };
-    },
-    {
-      tags: ["auth"],
+    if (!sessionId) {
+      set.status = 400;
+      throw Error("You are not logged in");
     }
-  );
+
+    await authService.logout(sessionId);
+    session.remove();
+    return { message: "Logout successfull" };
+  });

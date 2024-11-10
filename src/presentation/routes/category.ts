@@ -4,20 +4,17 @@ import { sessionMiddleware } from "../middlewares/session-middleware";
 
 export const categoryRouter = new Elysia()
   .derive(sessionMiddleware)
-  .get(
-    "/categories",
-    async ({ user, set }) => {
-      const categories = await categoryService.getCategoriesByUser(user.id);
-      set.status = 200;
-      return {
-        message: "Categories are sucessfully loaded",
-        data: categories,
-      };
-    },
-    {
-      tags: ["categories"],
-    }
-  )
+  .guard({
+    tags: ["categories"],
+  })
+  .get("/categories", async ({ user, set }) => {
+    const categories = await categoryService.getCategoriesByUser(user.id);
+    set.status = 200;
+    return {
+      message: "Categories are sucessfully loaded",
+      data: categories,
+    };
+  })
   .post(
     "/categories",
     async ({ user, body, set }) => {
@@ -32,7 +29,6 @@ export const categoryRouter = new Elysia()
       };
     },
     {
-      tags: ["categories"],
       body: t.Object({
         name: t.String({ minLength: 3, maxLength: 20 }),
       }),
@@ -53,23 +49,16 @@ export const categoryRouter = new Elysia()
       };
     },
     {
-      tags: ["categories"],
       body: t.Object({
         name: t.String({ minLength: 3, maxLength: 20 }),
       }),
     }
   )
-  .delete(
-    "/categories/:id",
-    async ({ user, set, params: { id } }) => {
-      const deletedCategory = await categoryService.deleteCategory(id, user.id);
-      set.status = 200;
-      return {
-        message: "Delete category success",
-        data: deletedCategory,
-      };
-    },
-    {
-      tags: ["categories"],
-    }
-  );
+  .delete("/categories/:id", async ({ user, set, params: { id } }) => {
+    const deletedCategory = await categoryService.deleteCategory(id, user.id);
+    set.status = 200;
+    return {
+      message: "Delete category success",
+      data: deletedCategory,
+    };
+  });

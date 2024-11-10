@@ -5,10 +5,8 @@ import "reflect-metadata";
 import { InsertUser, LoginUser } from "../infrastructure/interfaces/user";
 import {
   EmailAlreadyRegisteredError,
-  InvalidPasswordError,
-  ServerError,
-  SessionNotFoundError,
-  UserNotFoundError,
+  InvalidCredential,
+  NotFoundError,
 } from "../infrastructure/errors";
 import { SessionRepo } from "../infrastructure/repositories/session";
 
@@ -27,16 +25,12 @@ export class AuthService {
       throw new EmailAlreadyRegisteredError();
     }
 
-    try {
-      const hashPassword = await Bun.password.hash(password, "argon2d");
-      return await this.userRepo.createUser({
-        email: email,
-        name: name,
-        password: hashPassword,
-      });
-    } catch (_e) {
-      throw new ServerError();
-    }
+    const hashPassword = await Bun.password.hash(password, "argon2d");
+    return await this.userRepo.createUser({
+      email: email,
+      name: name,
+      password: hashPassword,
+    });
   }
 
   async login(data: LoginUser) {
@@ -45,32 +39,28 @@ export class AuthService {
     const user = await this.userRepo.findUserByEmail(email);
 
     if (!user) {
-      throw new UserNotFoundError();
+      throw new NotFoundError("User not found.");
     }
 
     const isValid = await Bun.password.verify(password, user.password);
 
     if (!isValid) {
-      throw new InvalidPasswordError();
+      throw new InvalidCredential("Invalid credential");
     }
 
-    try {
-      const session = await this.sessionRepo.generateToken(user);
-      return { user, session };
-    } catch (_e) {
-      throw new ServerError();
-    }
+    const session = await this.sessionRepo.generateToken(user);
+    return { user, session };
   }
 
   async logout(token: string) {
-      return this.sessionRepo.deleteToken(token);
+    return this.sessionRepo.deleteToken(token);
   }
 
   async getSession(token: string) {
     const session = await this.sessionRepo.getToken(token);
 
     if (!session) {
-      throw new SessionNotFoundError();
+      throw new NotFoundError("Session not found");
     }
 
     return session;

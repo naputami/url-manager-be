@@ -1,43 +1,36 @@
-export class EmailAlreadyRegisteredError extends Error {
+export class AppError extends Error {
+  constructor(message: string, public statusCode: number, public code: string) {
+    super(message);
+    this.name = "AppError";
+  }
+}
+
+export class EmailAlreadyRegisteredError extends AppError {
   constructor(message: string = "Email is already registered") {
-    super(message);
-    this.name = "EmailAlreadyRegisteredError";
+    super(message, 409, "EMAIL_REGISTERED_ERROR");
   }
 }
 
-export class UnauthorizedError extends Error {
+export class UnauthorizedError extends AppError {
   constructor(message: string = "Unauthorized") {
-    super(message);
-    this.name = "Unauthorized";
+    super(message, 401, "UNAUTHORIZED");
   }
 }
 
-
-export class UserNotFoundError extends Error {
-    constructor(message: string = "User is not found") {
-      super(message);
-      this.name = "UserNotFoundError";
-    }
-}
-
-export class InvalidPasswordError extends Error {
-    constructor(message: string = "Invalid password") {
-      super(message);
-      this.name = "InvalidPassword";
-    }
-}
-
-export class SessionNotFoundError extends Error {
-  constructor(message: string = "Session not found") {
-    super(message);
-    this.name = "SessionNotFound";
+export class ForbiddenError extends AppError {
+  constructor(message: string = "You are not allowed to access this resource") {
+    super(message, 403, "FORBIDDEN");
   }
 }
 
+export class NotFoundError extends AppError {
+  constructor(message: string) {
+    super(message, 404, "NOT_FOUND");
+  }
+}
 
-export class ServerError extends Error {
-  constructor(message: string = "An unexpected error occurred") {
-    super(message);
-    this.name = "ServerError";
+export class InvalidCredential extends AppError {
+  constructor(message: string) {
+    super(message, 400, "INVALID_CREDENTIAL");
   }
 }

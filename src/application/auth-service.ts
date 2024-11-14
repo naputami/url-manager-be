@@ -13,8 +13,8 @@ import { SessionRepo } from "../infrastructure/repositories/session";
 @injectable()
 export class AuthService {
   constructor(
-    @inject(TYPES.UserRepo) private userRepo: UserRepo,
-    @inject(TYPES.SessionRepo) private sessionRepo: SessionRepo
+    @inject(TYPES.userRepo) private userRepo: UserRepo,
+    @inject(TYPES.sessionRepo) private sessionRepo: SessionRepo,
   ) {}
 
   async register(data: InsertUser) {

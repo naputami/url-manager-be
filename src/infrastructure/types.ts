@@ -1,9 +1,10 @@
 export const TYPES = {
-  UserRepo: Symbol.for('UserRepo'),
-  UserService: Symbol.for('UserService'),
-  SessionRepo: Symbol.for('SessionRepo'),
-  CategoryRepo: Symbol.for('CategoryRepo'),
-  CategoryService: Symbol.for('CategoryService'),
-  LinkRepo: Symbol.for("LinkRepo"),
-  LinkService: Symbol.for("LinkService")
+  userRepo: Symbol.for('userRepo'),
+  userService: Symbol.for('userService'),
+  sessionRepo: Symbol.for('sessionRepo'),
+  categoryRepo: Symbol.for('categoryRepo'),
+  categoryService: Symbol.for('categoryService'),
+  linkRepo: Symbol.for("linkRepo"),
+  linkService: Symbol.for("linkService"),
+  logger: Symbol.for("logger")
 };

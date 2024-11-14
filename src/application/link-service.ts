@@ -11,8 +11,8 @@ import { Link } from "@prisma/client";
 @injectable()
 export class LinkService {
   constructor(
-    @inject(TYPES.LinkRepo) private linkRepo: LinkRepo,
-    @inject(TYPES.CategoryRepo) private categoryRepo: CategoryRepo
+    @inject(TYPES.linkRepo) private linkRepo: LinkRepo,
+    @inject(TYPES.categoryRepo) private categoryRepo: CategoryRepo
   ) {}
 
   async getLinksByUser(userId: string) {

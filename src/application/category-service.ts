@@ -6,7 +6,7 @@ import { ForbiddenError } from "../infrastructure/errors";
 
 @injectable()
 export class CategoryService {
-  constructor(@inject(TYPES.CategoryRepo) private categoryRepo: CategoryRepo) {}
+  constructor(@inject(TYPES.categoryRepo) private categoryRepo: CategoryRepo) {}
 
   async getCategoriesByUser(userId: string) {
     return await this.categoryRepo.getCategoriesByUser(userId);

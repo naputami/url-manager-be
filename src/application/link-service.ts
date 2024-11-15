@@ -4,7 +4,7 @@ import { TYPES } from "../infrastructure/types";
 import { LinkRepo } from "../infrastructure/repositories/link";
 import { openai } from "../utils/openai";
 import { CategoryRepo } from "../infrastructure/repositories/category";
-import { NotFoundError, UnauthorizedError } from "../infrastructure/errors";
+import { BadRequestError, NotFoundError, UnauthorizedError } from "../infrastructure/errors";
 import { InsertLink } from "../infrastructure/interfaces/link";
 import { Link } from "@prisma/client";
 
@@ -24,7 +24,16 @@ export class LinkService {
 
     if (categories.length === 0) {
       throw new NotFoundError("Category not found. Create one first!");
+    
     }
+
+    const urlRegex =  /^https?:\/\/([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+
+    if(!urlRegex.test(link)){
+      throw new BadRequestError("URL format is not valid!");
+    }
+
+
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",

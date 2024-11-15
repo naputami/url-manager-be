@@ -34,3 +34,9 @@ export class InvalidCredential extends AppError {
     super(message, 400, "INVALID_CREDENTIAL");
   }
 }
+
+export class BadRequestError extends AppError {
+  constructor(message: string) {
+    super(message, 400, "BAD_REQUEST");
+  }
+}

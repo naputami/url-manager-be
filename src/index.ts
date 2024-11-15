@@ -4,8 +4,10 @@ import { swagger } from "@elysiajs/swagger";
 import { errorHandler } from "./presentation/middlewares/error-middleware";
 import { categoryRouter } from "./presentation/routes/category";
 import { linkRouter } from "./presentation/routes/link";
+import { cors } from '@elysiajs/cors'
 
 const app = new Elysia()
+  .use(cors())
   .use(
     swagger({
       path: "/docs",

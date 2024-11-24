@@ -10,7 +10,6 @@ export const errorHandler = (app: Elysia) =>
       return {
         success: false,
         message: error.message,
-        code: error.statusCode,
       };
     }
 
@@ -20,7 +19,6 @@ export const errorHandler = (app: Elysia) =>
       return {
         success: false,
         message: error.message,
-        code: 400,
       };
     }
 
@@ -30,7 +28,6 @@ export const errorHandler = (app: Elysia) =>
       return {
         success: false,
         message: error.message,
-        code: 404,
       };
     }
 
@@ -39,6 +36,5 @@ export const errorHandler = (app: Elysia) =>
     return {
       success: false,
       message: "Internal Server Error",
-      code: 500,
     };
   });

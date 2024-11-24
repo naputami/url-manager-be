@@ -9,7 +9,11 @@ export const linkRouter = new Elysia()
   })
   .get("/links", async ({ user, set }) => {
     set.status = 200;
-    return await linkService.getLinksByUser(user.id);
+    const data = await linkService.getLinksByUser(user.id);
+    return {
+      success: true,
+      data
+    }
   })
   .post(
     "/links",
@@ -17,7 +21,7 @@ export const linkRouter = new Elysia()
       const data = await linkService.createLink(body.link, user.id);
       set.status = 201;
       return {
-        message: "Link is saved",
+        success: true,
         data,
       };
     },
@@ -34,7 +38,7 @@ export const linkRouter = new Elysia()
       const updatedLink = await linkService.updateLink(data, id);
       set.status = 200;
       return {
-        message: "Links is updated!",
+        success: true,
         data: updatedLink,
       };
     },
@@ -43,7 +47,7 @@ export const linkRouter = new Elysia()
         link: t.String(),
         title: t.String(),
         summary: t.String(),
-        categoryId: t.String()
+        categoryId: t.String(),
       }),
     }
   )
@@ -51,7 +55,7 @@ export const linkRouter = new Elysia()
     const deletedLink = await linkService.deleteLink(id, user.id);
     set.status = 200;
     return {
-      message: "Link is deleted!",
+      success: true,
       data: deletedLink,
     };
   });

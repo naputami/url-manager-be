@@ -24,7 +24,7 @@ export const categoryRouter = new Elysia()
       );
       set.status = 201;
       return {
-        message: "Category is created",
+        success: true,
         data: newCategory,
       };
     },
@@ -44,7 +44,7 @@ export const categoryRouter = new Elysia()
       );
       set.status = 200;
       return {
-        message: "Update category success",
+        success: true,
         data: updatedCategory,
       };
     },
@@ -58,7 +58,7 @@ export const categoryRouter = new Elysia()
     const deletedCategory = await categoryService.deleteCategory(id, user.id);
     set.status = 200;
     return {
-      message: "Delete category success",
+      success: true,
       data: deletedCategory,
     };
   });

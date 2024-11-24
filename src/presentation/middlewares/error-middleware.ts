@@ -8,9 +8,9 @@ export const errorHandler = (app: Elysia) =>
       loggerService.error(error.message);
       set.status = error.statusCode;
       return {
-        error: true,
+        success: false,
         message: error.message,
-        code: error.code,
+        code: error.statusCode,
       };
     }
 
@@ -18,9 +18,9 @@ export const errorHandler = (app: Elysia) =>
       loggerService.error(error.message);
       set.status = 400;
       return {
-        error: true,
+        success: false,
         message: error.message,
-        code: "VALIDATION_ERROR",
+        code: 400,
       };
     }
 
@@ -28,17 +28,17 @@ export const errorHandler = (app: Elysia) =>
       loggerService.error(error.message);
       set.status = 404;
       return {
-        error: true,
+        success: false,
         message: error.message,
-        code: "NOT_FOUND",
+        code: 404,
       };
     }
 
     loggerService.error(error.message);
     set.status = 500;
     return {
-      error: true,
+      success: false,
       message: "Internal Server Error",
-      code: "INTERNAL_SERVER_ERROR",
+      code: 500,
     };
   });

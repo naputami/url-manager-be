@@ -11,8 +11,8 @@ export const authRouter = new Elysia()
       const user = await authService.register(body);
       set.status = 201;
       return {
-        message: "Registration success",
-        user: {
+        success: true,
+        data: {
           name: user.name,
           email: user.email,
         },
@@ -22,7 +22,7 @@ export const authRouter = new Elysia()
       body: t.Object({
         name: t.String({ minLength: 3, maxLength: 50 }),
         email: t.String({ minLength: 1, maxLength: 50, format: "email" }),
-        password: t.String(),
+        password: t.String({ minLength: 4, maxLength: 20 }),
       }),
     }
   )
@@ -35,14 +35,15 @@ export const authRouter = new Elysia()
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 24 * 7, // 1 week
         value: newSession.id,
+        sameSite: "none",
       });
 
       set.status = 200;
 
       return {
-        message: "Login success",
-        user: {
-          id: user.id,
+        success: true,
+        data: {
+          sessionId: newSession.id,
           email: user.email,
           name: user.name,
         },
@@ -65,5 +66,5 @@ export const authRouter = new Elysia()
 
     await authService.logout(sessionId);
     session.remove();
-    return { message: "Logout successfull" };
+    return { success: true};
   });

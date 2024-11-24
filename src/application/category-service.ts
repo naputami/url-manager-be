@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { TYPES } from "../infrastructure/types";
 import { CategoryRepo } from "../infrastructure/repositories/category";
 import { ForbiddenError } from "../infrastructure/errors";
+import { NotFoundError } from "elysia";
 
 @injectable()
 export class CategoryService {
@@ -19,7 +20,11 @@ export class CategoryService {
   async updateCategory(newName: string, id: string, userId: string) {
     const updatedCategory = await this.categoryRepo.getCategoryById(id);
 
-    if (updatedCategory?.userId !== userId) {
+    if(!updatedCategory){
+      throw new NotFoundError("Category not found");
+    }
+
+    if (updatedCategory.userId !== userId) {
       throw new ForbiddenError();
     }
 

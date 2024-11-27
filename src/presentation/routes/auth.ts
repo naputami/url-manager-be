@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia";
 import { authService } from "../../infrastructure/ioc/container";
+import { BadRequestError } from "../../infrastructure/errors";
 
 export const authRouter = new Elysia()
   .guard({
@@ -56,12 +57,11 @@ export const authRouter = new Elysia()
       }),
     }
   )
-  .post("/logout", async ({ set, cookie: { session } }) => {
+  .post("/logout", async ({ cookie: { session } }) => {
     const sessionId = session.value;
 
     if (!sessionId) {
-      set.status = 400;
-      throw Error("You are not logged in");
+       throw new BadRequestError("You are not logged in")
     }
 
     await authService.logout(sessionId);

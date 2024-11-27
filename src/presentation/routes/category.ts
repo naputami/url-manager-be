@@ -11,7 +11,7 @@ export const categoryRouter = new Elysia()
     const categories = await categoryService.getCategoriesByUser(user.id);
     set.status = 200;
     return {
-      message: "Categories are sucessfully loaded",
+      success: true,
       data: categories,
     };
   })

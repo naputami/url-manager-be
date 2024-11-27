@@ -18,6 +18,7 @@ export class LinkRepo implements ILink {
         summary: true,
         category: {
           select: {
+            id: true,
             name: true
           }
         }

@@ -3,31 +3,8 @@ import { categoryRouter } from "../../src/presentation/routes/category";
 import { categoryService } from "../../src/infrastructure/ioc/container";
 import { authService } from "../../src/infrastructure/ioc/container";
 import { errorHandler } from "../../src/presentation/middlewares/error-middleware";
+import { mockCategory, mockSession, mockUser } from "../mock-data";
 import { jest, test, expect, afterEach, spyOn, describe, beforeAll } from "bun:test";
-
-const mockUser = {
-  id: "mock_id",
-  name: "John",
-  email: "john@example.com",
-  createdAt: new Date("2024-11-27"),
-  updatedAt: new Date("2024-11-27"),
-  password: "mock_password",
-};
-
-const mockSession = {
-  id: "mock_session_id",
-  createdAt: new Date("2024-11-27"),
-  userId: "mock_user_id",
-};
-
-const mockCategory = {
-  name: "category name",
-  id: "cat1",
-  userId: mockUser.id,
-  createdAt: new Date("2024-11-27"),
-  updatedAt: new Date("2024-11-27"),
-  
-};
 
 const app = new Elysia()
   .use(errorHandler)
@@ -247,7 +224,7 @@ describe("Category Route Test ", () => {
     });
   })
 
-  describe("Category Route - Update Category", () => {
+  describe("Category Route - Delete Category", () => {
     beforeAll(() => {
       spyOn(authService, "getSession").mockResolvedValue({
         ...mockSession,

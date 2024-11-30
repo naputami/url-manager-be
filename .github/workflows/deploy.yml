@@ -17,8 +17,18 @@ jobs:
       uses: webfactory/ssh-agent@v0.5.0
       with:
         ssh-private-key: ${{secrets.SSH_PRIVATE_KEY}}
-
-    
+        
+    - name: Debug Server Host
+      run: |
+        echo "Server Host: ${{ secrets.SSH_HOST }}"
+        # Validate hostname
+        if [[ "${{ secrets.SSH_HOST }}" =~ ^[a-zA-Z0-9.-]+$ ]]; then
+          echo "Hostname format looks valid"
+        else
+          echo "Invalid hostname format"
+          exit 1
+        fi
+        
     - name: Deploy to server
       run : |
             ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@{{ secrets.SSH_HOST }} << EOF

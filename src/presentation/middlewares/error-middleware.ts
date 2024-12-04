@@ -18,7 +18,7 @@ export const errorHandler = (app: Elysia) =>
       set.status = 400;
       return {
         success: false,
-        message: error.message,
+        message: error.all.map(err => err.summary),
       };
     }
 

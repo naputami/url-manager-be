@@ -13,6 +13,7 @@ export const authRouter = new Elysia()
       set.status = 201;
       return {
         success: true,
+        message: "You can login using you registered account",
         data: {
           name: user.name,
           email: user.email,
@@ -43,6 +44,7 @@ export const authRouter = new Elysia()
 
       return {
         success: true,
+        message: "Logged in",
         data: {
           sessionId: newSession.id,
           email: user.email,
@@ -66,5 +68,5 @@ export const authRouter = new Elysia()
 
     await authService.logout(sessionId);
     session.remove();
-    return { success: true};
+    return { success: true, message: "Logged out"};
   });

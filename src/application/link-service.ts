@@ -15,12 +15,12 @@ export class LinkService {
     @inject(TYPES.categoryRepo) private categoryRepo: CategoryRepo
   ) {}
 
-  async getLinksByUser(userId: string) {
-    return await this.linkRepo.getLinksByUser(userId);
+  async getLinksByUser(userId: string, title: string | undefined, category: string | undefined) {
+    return await this.linkRepo.getLinksByUser(userId, title, category);
   }
 
   async createLink(link: string, userId: string) {
-    const categories = await this.categoryRepo.getCategoriesByUser(userId);
+    const categories = await this.categoryRepo.getCategoriesByUser(userId, undefined);
 
     if (categories.length === 0) {
       throw new NotFoundError("Category not found. Create one first!");

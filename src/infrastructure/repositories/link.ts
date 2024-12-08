@@ -2,11 +2,102 @@ import "reflect-metadata";
 import { injectable } from "inversify";
 import { prisma } from "../../utils/prisma";
 import { Link } from "@prisma/client";
-import { InsertLink, ILink} from "../interfaces/link";
+import { InsertLink, ILink } from "../interfaces/link";
 
 @injectable()
 export class LinkRepo implements ILink {
-  async getLinksByUser(userId: string): Promise<Partial<Link>[]> {
+  async getLinksByUser(
+    userId: string,
+    title: string | undefined,
+    category: string | undefined
+  ): Promise<Partial<Link>[]> {
+    if (category && title) {
+      return await prisma.link.findMany({
+        where: {
+          AND: [
+            {
+              title: {
+                contains: title,
+                mode: "insensitive",
+              },
+            },
+            {
+              categoryId: {
+                equals: category,
+              },
+            },
+            {
+              userId: {
+                equals: userId,
+              },
+            },
+          ],
+        },
+        select: {
+          id: true,
+          title: true,
+          link: true,
+          summary: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+    }
+    if (title) {
+      return await prisma.link.findMany({
+        where: {
+          title: {
+            contains: title,
+            mode: "insensitive",
+          },
+          userId: {
+            equals: userId,
+          },
+        },
+        select: {
+          id: true,
+          title: true,
+          link: true,
+          summary: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+    }
+
+    if (category) {
+      return await prisma.link.findMany({
+        where: {
+          categoryId: {
+            equals: category,
+          },
+          userId: {
+            equals: userId,
+          },
+        },
+        select: {
+          id: true,
+          title: true,
+          link: true,
+          summary: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+    }
+
     return await prisma.link.findMany({
       where: {
         userId,
@@ -19,9 +110,9 @@ export class LinkRepo implements ILink {
         category: {
           select: {
             id: true,
-            name: true
-          }
-        }
+            name: true,
+          },
+        },
       },
     });
   }

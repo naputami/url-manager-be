@@ -9,8 +9,8 @@ import { NotFoundError } from "elysia";
 export class CategoryService {
   constructor(@inject(TYPES.categoryRepo) private categoryRepo: CategoryRepo) {}
 
-  async getCategoriesByUser(userId: string) {
-    return await this.categoryRepo.getCategoriesByUser(userId);
+  async getCategoriesByUser(userId: string, name: string | undefined) {
+    return await this.categoryRepo.getCategoriesByUser(userId, name);
   }
 
   async createCategory(name: string, userId: string) {

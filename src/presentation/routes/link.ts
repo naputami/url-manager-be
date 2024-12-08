@@ -7,14 +7,27 @@ export const linkRouter = new Elysia()
   .guard({
     tags: ["links"],
   })
-  .get("/links", async ({ user, set }) => {
-    set.status = 200;
-    const data = await linkService.getLinksByUser(user.id);
-    return {
-      success: true,
-      data
+  .get(
+    "/links",
+    async ({ user, set, query }) => {
+      set.status = 200;
+      const data = await linkService.getLinksByUser(
+        user.id,
+        query.title,
+        query.category
+      );
+      return {
+        success: true,
+        data,
+      };
+    },
+    {
+      query: t.Object({
+        title: t.Optional(t.String()),
+        category: t.Optional(t.String()),
+      }),
     }
-  })
+  )
   .post(
     "/links",
     async ({ user, body, set }) => {

@@ -6,7 +6,25 @@ import { injectable } from "inversify";
 
 @injectable()
 export class CategoryRepo implements ICategory {
-  async getCategoriesByUser(userId: string): Promise<Partial<Category>[]> {
+  async getCategoriesByUser(userId: string, name: string | undefined): Promise<Partial<Category>[]> {
+    if(name){
+      return await prisma.category.findMany({
+        where: {
+          name: {
+            contains: name,
+            mode: "insensitive"
+          },
+          userId: {
+            equals: userId
+          }
+        },
+        select: {
+          id: true,
+          name: true,
+        }
+      })
+    }
+
     return await prisma.category.findMany({
       where: {
         userId,

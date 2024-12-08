@@ -7,13 +7,19 @@ export const categoryRouter = new Elysia()
   .guard({
     tags: ["categories"],
   })
-  .get("/categories", async ({ user, set }) => {
-    const categories = await categoryService.getCategoriesByUser(user.id);
+  .get("/categories", async ({ user, set, query }) => {
+    const categories = await categoryService.getCategoriesByUser(user.id, query.name);
     set.status = 200;
     return {
       success: true,
       data: categories,
     };
+  }, {
+    query: t.Optional(
+			t.Object({
+				name: t.String()
+			})
+		)
   })
   .post(
     "/categories",

@@ -27,7 +27,7 @@ export class LinkService {
     
     }
 
-    const urlRegex =  /^https?:\/\/([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+    const urlRegex = /^https?:\/\/([\da-z\-._]+\.)+[a-z]{2,}(\/[^\s]*)?$/i;
 
     if(!urlRegex.test(link)){
       throw new BadRequestError("URL format is not valid!");

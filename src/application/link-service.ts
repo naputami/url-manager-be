@@ -112,4 +112,8 @@ export class LinkService {
 
     return await this.linkRepo.deleteLink(id);
   }
+
+  async getLatestLinks(userId: string){
+    return await this.linkRepo.getLatestLinksByUser(userId);
+  }
 }

@@ -158,4 +158,26 @@ export class LinkRepo implements ILink {
       },
     });
   }
+
+  async getLatestLinksByUser(userId: string) : Promise<Partial<Link>[]> {
+    return await prisma.link.findMany({
+      where: {
+        userId
+      },
+      orderBy: [{createdAt: 'desc'}],
+      take: 5,
+      select: {
+        id: true,
+        title: true,
+        link: true,
+        summary: true,
+        category: {
+          select: {
+            name: true 
+          }
+        },
+        createdAt: true
+      }
+    })
+  }
 }

@@ -10,6 +10,7 @@ export interface ILink {
   createLink: (data: InsertLink) => Promise<Link>;
   updateLink: (data: Partial<Link>, id: string) => Promise<Link | null>;
   deleteLink: (id: string) => Promise<Link | null>;
+  getLatestLinksByUser: (userId: string) => Promise<Partial<Link>[]>;
 }
 
 export type InsertLink = {

@@ -28,6 +28,14 @@ export const linkRouter = new Elysia()
       }),
     }
   )
+  .get("/latest-links", async ({ user, set }) => {
+    set.status = 200;
+    const data = await linkService.getLatestLinks(user.id);
+    return {
+      success: true,
+      data: data,
+    };
+  })
   .post(
     "/links",
     async ({ user, body, set }) => {
